@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toki Mini App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Flatpickr CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="calendar-controls">
+              <select id="year-select"></select>
+            </div>
+            <div id="calendar"></div>
+        </header>
+        <main>
+            <h2 id="selected-date"></h2>
+            <ul id="reminders-list">
+                <li class="no-reminders">Нет напоминаний</li>
+            </ul>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <!-- yearSelect plugin for flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/yearSelect/yearSelect.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/yearSelect/yearSelect.css">
+    <script src="script.js"></script>
+</body>
+</html>
