@@ -3,6 +3,61 @@ const dateTitleEl = document.getElementById('selected-date');
 const remindersListEl = document.getElementById('reminders-list');
 const yearSelect = document.getElementById('year-select');
 
+// Получаем user_id из Telegram WebApp
+const userId = window.telegramUserId || null;
+console.log('User ID для API запросов:', userId);
+
+// Настройка API
+const API_BASE_URL = 'http://localhost:8000';
+console.log('API Base URL:', API_BASE_URL);
+
+// Функция для получения напоминаний пользователя
+async function fetchReminders(userId, selectedDate) {
+    if (!userId) {
+        console.warn('User ID не найден, пропускаем запрос к API');
+        return [];
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reminders/${userId}`);
+        
+        if (response.status === 404) {
+            console.log('Пользователь не найден или нет напоминаний');
+            return [];
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const allReminders = await response.json();
+        console.log('Все напоминания получены:', allReminders);
+        
+        // Фильтруем напоминания по выбранной дате
+        const selectedDateStr = formatDateForFilter(selectedDate);
+        const filteredReminders = allReminders.filter(reminder => {
+            const reminderDate = new Date(reminder.remind_at);
+            const reminderDateStr = formatDateForFilter(reminderDate);
+            return reminderDateStr === selectedDateStr;
+        });
+        
+        console.log('Напоминания на выбранную дату:', filteredReminders);
+        return filteredReminders;
+        
+    } catch (error) {
+        console.error('Ошибка при получении напоминаний:', error);
+        return [];
+    }
+}
+
+// Вспомогательная функция для форматирования даты для сравнения (YYYY-MM-DD)
+function formatDateForFilter(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 const monthNames = [
   'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
   'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
